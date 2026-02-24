@@ -55,9 +55,15 @@ function App() {
 
   if (!session) {
     return (
-      <main className="container" style={{ maxWidth: '400px', marginTop: '10vh' }}>
+      <div style={{minHeight: "100vh", 
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#F9C8CE"
+      }}>
+      <main className="container" style={{ maxWidth: '600px', marginTop: '-2vh'}}>
         <article>
-          <header><h2 style={{ textAlign: 'center' }}>🔐 เข้าสู่ระบบ</h2></header>
+          <header style={{backgroundColor: "#F42C6F"}}><h2 style={{ textAlign: 'center' ,marginTop: "2vh" ,}}>🔐 เข้าสู่ระบบ</h2></header> 
           <form onSubmit={(e) => {
             e.preventDefault();
             supabase.auth.signInWithPassword({ email, password }).then(({ error }) => {
@@ -77,6 +83,7 @@ function App() {
           <footer style={{ textAlign: 'center' }}>{message}</footer>
         </article>
       </main>
+      </div>
     );
   }
 
