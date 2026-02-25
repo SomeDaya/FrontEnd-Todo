@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
+import "./App.css";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -61,9 +62,9 @@ function App() {
         justifyContent: "center",
         backgroundColor: "#F9C8CE"
       }}>
-      <main className="container" style={{ maxWidth: '600px', marginTop: '-2vh'}}>
-        <article>
-          <header style={{backgroundColor: "#F42C6F"}}><h2 style={{ textAlign: 'center' ,marginTop: "2vh" ,}}>🔐 เข้าสู่ระบบ</h2></header> 
+      <main className="container" style={{ maxWidth: '600px', marginTop: '-5vh'}}>
+        <article style={{background: "rgba(255, 255, 255, 0.15)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" , borderRadius: "15px" , border: "1px solid rgba(255, 255, 255, 0.3)" , boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)"}}>
+          <header style={{backgroundColor: "transparent", boxShadow: "none", border: "none"}}><h2 style={{ textAlign: 'center' ,marginTop: "2vh" , marginBottom: "-2vh" ,color : "rgb(244, 44, 111)"}}>Login</h2></header> 
           <form onSubmit={(e) => {
             e.preventDefault();
             supabase.auth.signInWithPassword({ email, password }).then(({ error }) => {
@@ -72,15 +73,15 @@ function App() {
           }}>
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <button type="submit">เข้าสู่ระบบ</button>
-            <button type="button" className="outline" onClick={() => {
+            <button type="submit">Login</button>
+            <button type="button" className="outline"  onClick={() => {
               supabase.auth.signUp({ email, password }).then(({ error }) => {
                 if (error) setMessage('❌ ' + error.message);
                 else setMessage('✅ สมัครสำเร็จ! เช็คเมลหรือล็อกอินได้เลย');
               });
-            }}>สมัครใหม่</button>
+            }}>register</button>
           </form>
-          <footer style={{ textAlign: 'center' }}>{message}</footer>
+          <footer style={{ textAlign: 'center' , backgroundColor: "transparent", boxShadow: "none", border: "none" , marginTop: "-1vh" , marginBottom: "-1vh" }}>{message}</footer>
         </article>
       </main>
       </div>
@@ -88,26 +89,28 @@ function App() {
   }
 
   return (
-    <main className="container" style={{ maxWidth: '600px', marginTop: '50px' }}>
+    <div style={{ backgroundColor: "#F9C8CE" , minHeight: "100vh" , display : "flex"}}>
+    <main className="container" style={{ maxWidth: '600px', marginTop: '40px' }}>
       <nav>
-        <ul><li><strong>🚀 Todo ของ {session.user.email}</strong></li></ul>
-        <ul><li><button className="outline contrast" onClick={() => supabase.auth.signOut()}>ออก</button></li></ul>
+        <ul><li><strong class="forbox">🚀 Todo for {session.user.email}</strong></li></ul>
+        <ul><li><button className="outline contrast" onClick={() => supabase.auth.signOut()}>Exit</button></li></ul>
       </nav>
-      <article>
+      <article class="headerup">
         <fieldset role="group">
-          <input type="text" placeholder="มีอะไรต้องทำไหมบอย?" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
-          <button onClick={addTodo}>เพิ่ม</button>
+          <input type="text" class="forup" placeholder="มีอะไรต้องทำไหมบอย?" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
+          <button  class="button2 forup" onClick={addTodo}>เพิ่ม</button>
         </fieldset>
         {todos.map((todo) => (
-          <div key={todo.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #eee' }}>
+          <div key={todo.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0px' , borderBottom: 'px solid #eee' }}>
             <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? 'line-through' : 'none', cursor: 'pointer', flex: 1 }}>
               {todo.title}
             </span>
-            <button className="outline secondary" onClick={() => deleteTodo(todo.id)} style={{ width: 'auto', padding: '2px 10px' }}>ลบ</button>
+            <button class="delete1" onClick={() => deleteTodo(todo.id)} style={{ width: 'auto', padding: '2px 10px' }}>Delete</button>
           </div>
         ))}
       </article>
     </main>
+    </div>
   );
 }
 
