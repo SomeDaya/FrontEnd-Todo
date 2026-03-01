@@ -9,6 +9,45 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [isRegistering , setIsRegistering] = useState(false)
+  const [name , setName] = useState("")
+  const [confirmPassword , setConfirmPassword] = useState("")
+  const [editingId, setEditingId] = useState(null)
+  const [editText, setEditText] = useState("")
+
+
+   const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setMessage("รหัสผ่านไม่ตรงกันเครฟฟฟ");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            display_name: name,
+          }
+        }
+      });
+
+      if(error) throw error;
+
+      setMessage("🎉 สมัครสมาชิกสำเร็จ! Let's Gooooo");
+
+      setName("");
+      setPassword("");
+      setConfirmPassword("");
+      setIsRegistering(false);
+      
+    } catch (error) {
+      setMessage("เอ๊ะ สมัครไม่ผ่าน" + error.message)
+    }
+  };
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
@@ -19,39 +58,79 @@ function App() {
   }, []);
 
   const fetchTodos = async () => {
-    const { data, error } = await supabase
-      .from('Todos')
-      .select('*')
-      .order('id', { ascending: true });
-    if (!error) setTodos(data);
+    try {
+      const response = await fetch(`http://localhost:3000/todos?user_id=${session.user.id}`);
+      const data = await response.json();
+      setTodos(data);
+    } catch (error) {
+      console.error("ดึงข้อมูลไม่สำเร็จ", error)
+    }
   };
 
   useEffect(() => {
     if (session) fetchTodos();
   }, [session]);
 
+
   const addTodo = async () => {
     if (newTodo.length === 0) return;
-    const { error } = await supabase
-      .from('Todos')
-      .insert([{ title: newTodo, user_id: session.user.id }]); // ผูกกับ ID ของบอย
-    if (!error) {
-      setNewTodo('');
-      fetchTodos();
+    try {
+      const response = await fetch("http://localhost:3000/todos" , {
+        method : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newTodo,
+          user_id: session.user.id
+        })
+      });
+
+      if (response.ok) {
+        setNewTodo("");
+        fetchTodos();
+      }
+    } catch (error) {
+      console.error("เพิ่มงานไม่สำเร็จ:", error );
     }
   };
 
   const deleteTodo = async (id) => {
-    const { error } = await supabase.from('Todos').delete().eq('id', id);
-    if (!error) fetchTodos();
+    try {
+      const response = await fetch (`http://localhost:3000/todos/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) fetchTodos();
+    } catch(error) {
+      console.error("ลบงานไม่สำเร็จ:" , error );
+    }
   };
 
   const toggleTodo = async (id, is_completed) => {
-    const { error } = await supabase
-      .from('Todos')
-      .update({ is_completed: !is_completed })
-      .eq('id', id);
-    if (!error) fetchTodos();
+    try {
+      const response = await fetch (`http://localhost:3000/todos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type" : "application/json"} ,
+        body: JSON.stringify({ is_completed : !is_completed})
+      })
+      if (response.ok) fetchTodos();
+    } catch(error) {
+      console.error("อัปเดตสถานะไม่สำเร็จ:" , error)
+    }
+  };
+
+  const saveEdit = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/todos/${id}` , {
+        method: "PUT" ,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: editText})
+      });
+      if(response.ok) {
+        setEditingId(null);
+        fetchTodos();
+      }
+    } catch (error) {
+      console.error("แก้ไขข้อความไม่สำเร็จ" , error);
+    }
   };
 
   if (!session) {
@@ -64,23 +143,35 @@ function App() {
       }}>
       <main className="container" style={{ maxWidth: '600px', marginTop: '-5vh'}}>
         <article style={{background: "rgba(255, 255, 255, 0.15)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" , borderRadius: "15px" , border: "1px solid rgba(255, 255, 255, 0.3)" , boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)"}}>
+          {isRegistering ? (
+            <>
           <header style={{backgroundColor: "transparent", boxShadow: "none", border: "none"}}><h2 style={{ textAlign: 'center' ,marginTop: "2vh" , marginBottom: "-2vh" ,color : "rgb(244, 44, 111)"}}>Login</h2></header> 
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            supabase.auth.signInWithPassword({ email, password }).then(({ error }) => {
-              if (error) setMessage('❌ ' + error.message);
-            });
-          }}>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <button type="submit">Login</button>
-            <button type="button" className="outline"  onClick={() => {
-              supabase.auth.signUp({ email, password }).then(({ error }) => {
-                if (error) setMessage('❌ ' + error.message);
-                else setMessage('✅ สมัครสำเร็จ! เช็คเมลหรือล็อกอินได้เลย');
-              });
-            }}>register</button>
+          <form onSubmit={handleSignUp}>
+            <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+            <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="text" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input type="text" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <button type='submit'>register</button>
           </form>
+          </>
+          ) : (
+            <>
+          <header style={{backgroundColor: "transparent", boxShadow: "none", border: "none"}}>
+                <h2 style={{ textAlign: 'center' ,marginTop: "2vh" , marginBottom: "-2vh" ,color : "rgb(244, 44, 111)"}}>Login</h2>
+              </header> 
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                supabase.auth.signInWithPassword({ email, password }).then(({ error }) => {
+                  if (error) setMessage('❌ ' + error.message);
+                });
+              }}>
+                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <button type="submit">Login</button>
+                <button type="button" className="outline" onClick={() => setIsRegistering(true)}>Register</button>
+              </form>
+              </>
+          )}
           <footer style={{ textAlign: 'center' , backgroundColor: "transparent", boxShadow: "none", border: "none" , marginTop: "-1vh" , marginBottom: "-1vh" }}>{message}</footer>
         </article>
       </main>
@@ -102,10 +193,36 @@ function App() {
         </fieldset>
         {todos.map((todo) => (
           <div key={todo.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0px' , borderBottom: 'px solid #eee' }}>
-            <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? 'line-through' : 'none', cursor: 'pointer', flex: 1 }}>
-              {todo.title}
-            </span>
-            <button class="delete1" onClick={() => deleteTodo(todo.id)} style={{ width: 'auto', padding: '2px 10px' }}>Delete</button>
+            {editingId === todo.id ? (
+            <div style={{ display: "flex" , flex: 1, gap: "10px"}}>
+              <input 
+              type="text"
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              style={{ margin: 0, padding: "5px"}}
+              />
+              <button onClick={() => saveEdit(todo.id)} style={{ padding: "2px 10px" , width: "auto", backgroundColo: "#4CAF50", border: "none"}}>Save</button>
+              <button className="outline" onClick={() => setEditingId(null)} style={{ padding: "2px 10px" , width: "auto"}}>Cancel</button>
+            </div>
+            ) : (
+              <>
+                <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? "line-through" : "none", cursor: "pointer", flex: 1}}>
+                  {todo.title}
+                </span>
+                <div style ={{ display: "flex", gap: "5px"}}>
+                  <button 
+                  className="outline"
+                  onClick={() => {
+                    setEditingId(todo.id);
+                    setEditText(todo.title)
+                  }}
+                  style={{ padding: "2px 10px", width: "auto", borderColor: "#ffc107" , color: "#ffc107"}}>
+                    Edit
+                  </button>
+                  <button class="delete1" onClick={() => deleteTodo(todo.id)} style={{ width: "auto" , padding: "2px 10px"}}>Delete</button>
+                </div>
+              </>
+            )}
           </div>
         ))}
       </article>
