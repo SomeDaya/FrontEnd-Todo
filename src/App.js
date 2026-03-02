@@ -14,6 +14,8 @@ function App() {
   const [confirmPassword , setConfirmPassword] = useState("")
   const [editingId, setEditingId] = useState(null)
   const [editText, setEditText] = useState("")
+  const [editDiscription, setEditDiscription] = useState("")
+  const [viewingId , setViewingId] = useState(null)
 
 
    const handleSignUp = async (e) => {
@@ -122,10 +124,11 @@ function App() {
       const response = await fetch(`http://localhost:3000/todos/${id}` , {
         method: "PUT" ,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: editText})
+        body: JSON.stringify({ title: editText , discription: editDiscription})
       });
       if(response.ok) {
         setEditingId(null);
+        setViewingId(null);
         fetchTodos();
       }
     } catch (error) {
@@ -192,17 +195,29 @@ function App() {
           <button  class="button2 forup" onClick={addTodo}>เพิ่ม</button>
         </fieldset>
         {todos.map((todo) => (
-          <div key={todo.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0px' , borderBottom: 'px solid #eee' }}>
+          <div key={todo.id} style={{ display: 'flex', flexDirection: 'column', padding: '10px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
+         
+          <div style={{ display: "flex" , justifyContent: "space-between", alignItems: "center"}}>
+         
             {editingId === todo.id ? (
-            <div style={{ display: "flex" , flex: 1, gap: "10px"}}>
+            <div style={{ display: "flex" , flexDirection: "column", flex: 1, gap: "10px"}}>
               <input 
               type="text"
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
               style={{ margin: 0, padding: "5px"}}
+              placeholder="ชื่อหัวข้องาน"
               />
+              <textarea 
+              value={editDiscription}
+              onChange={(e) => setEditDiscription(e.target.value)}
+              style={{ margin: 0, padding: "5px" , minHeight: "60px"}}
+              placeholder="เพิ่มรายละเอียดงาน"
+              />
+              <div style={{ display: "flex" , flex: 1, gap: "10px"}}>
               <button onClick={() => saveEdit(todo.id)} style={{ padding: "2px 10px" , width: "auto", backgroundColo: "#4CAF50", border: "none"}}>Save</button>
-              <button className="outline" onClick={() => setEditingId(null)} style={{ padding: "2px 10px" , width: "auto"}}>Cancel</button>
+              <button className="outline" onClick={() => {setEditingId(null); setViewingId(null);}} style={{ padding: "2px 10px" , width: "auto"}}>Cancel</button>
+              </div>
             </div>
             ) : (
               <>
@@ -210,11 +225,20 @@ function App() {
                   {todo.title}
                 </span>
                 <div style ={{ display: "flex", gap: "5px"}}>
+                  <button
+                  className='outline'
+                  onClick={() => setViewingId(viewingId === todo.id ? null : todo.id)}
+                  style={{ padding: '2px 10px', width: "auto", borderColor: "#00bcd4", color: "#00bced4"}}
+                  >
+                    {viewingId === todo.id ? "Hide" : "Details"}
+                  </button>
                   <button 
                   className="outline"
                   onClick={() => {
                     setEditingId(todo.id);
                     setEditText(todo.title)
+                    setEditDiscription(todo.discription || "");
+                    setViewingId(null);
                   }}
                   style={{ padding: "2px 10px", width: "auto", borderColor: "#ffc107" , color: "#ffc107"}}>
                     Edit
@@ -223,7 +247,14 @@ function App() {
                 </div>
               </>
             )}
-          </div>
+            </div>
+          
+          {viewingId === todo.id && editingId !== todo.id && (
+            <div style={{ marginTop: "10px" , padding: "10px" , backgroundColor: "rgba(0,0,0,0.1)", borderRadius: "5px", fontSize: "0.9em" , color:"#333"}}>
+              {todo.discription ? todo.discription : "ยังไม่มีรายละเอียดงาน ลอง edit ดูสิ"}
+            </div>
+          )}
+           </div>
         ))}
       </article>
     </main>
