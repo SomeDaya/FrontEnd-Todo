@@ -61,7 +61,7 @@ function App() {
 
   const fetchTodos = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/todos?user_id=${session.user.id}`);
+      const response = await fetch(`https://testsopabase.onrender.com/todos?user_id=${session.user.id}`);
       const data = await response.json();
       setTodos(data);
     } catch (error) {
@@ -77,7 +77,7 @@ function App() {
   const addTodo = async () => {
     if (newTodo.length === 0) return;
     try {
-      const response = await fetch("http://localhost:3000/todos" , {
+      const response = await fetch("https://testsopabase.onrender.com/todos" , {
         method : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -97,7 +97,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      const response = await fetch (`http://localhost:3000/todos/${id}`, {
+      const response = await fetch (`https://testsopabase.onrender.com/todos`, {
         method: "DELETE",
       });
       if (response.ok) fetchTodos();
@@ -108,7 +108,7 @@ function App() {
 
   const toggleTodo = async (id, is_completed) => {
     try {
-      const response = await fetch (`http://localhost:3000/todos/${id}`, {
+      const response = await fetch (`https://testsopabase.onrender.com/todos`, {
         method: "PUT",
         headers: { "Content-Type" : "application/json"} ,
         body: JSON.stringify({ is_completed : !is_completed})
@@ -121,7 +121,7 @@ function App() {
 
   const saveEdit = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/todos/${id}` , {
+      const response = await fetch(`https://testsopabase.onrender.com/todos` , {
         method: "PUT" ,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: editText , discription: editDiscription})
