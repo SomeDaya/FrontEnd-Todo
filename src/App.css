@@ -42,8 +42,8 @@ button.outline {
   border: 1px solid rgb(244, 44, 111);
   color: rgb(217, 38, 98);
   border-radius: 11px;
-  height: 38px !important;
-  width: 120px !important;
+  height: 40px !important;
+  width: 165px !important;
   padding: 0 10px !important;
   display: inline-flex;
   align-items: center;
@@ -54,6 +54,29 @@ button.outline {
 
 button.outline:hover {
   background-color: rgb(199, 34, 89);
+  border: none;
+  outline: none;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(217, 38, 98, 0.3);
+}
+
+button.outline-custom {
+  background-color: transparent;
+  border: 1px solid rgb(244, 44, 111);
+  color: #ffc107;
+  border-radius: 11px;
+  height: 40px !important;
+  width: 165px !important;
+  padding: 0 10px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button.outline-custom:hover {
+  background-color: #ffc107;
   border: none;
   outline: none;
   color: #fff;
@@ -142,6 +165,15 @@ button[type="submit"]:hover {
   padding-left: 15px !important;
   padding-right: 15px !important;
   overflow-x: hidden;
+}
+
+.todo-content span {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 @media (max-width: 600px) {

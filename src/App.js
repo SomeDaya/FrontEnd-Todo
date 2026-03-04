@@ -16,6 +16,7 @@ function App() {
   const [editText, setEditText] = useState("")
   const [editDiscription, setEditDiscription] = useState("")
   const [viewingId , setViewingId] = useState(null)
+  const [isProcessing , setIsProcessing] = useState(false)
 
 
    const handleSignUp = async (e) => {
@@ -107,15 +108,32 @@ function App() {
   };
 
   const toggleTodo = async (id, is_completed) => {
+    if (isProcessing) return;
+
+    setIsProcessing(true);
+
+    setTodos(prevTodos => 
+      prevTodos.map(todo =>
+        todo.id === id ? { ...todo, is_completed: !is_completed } : todo
+      )
+    )
+
     try {
       const response = await fetch (`https://testsopabase.onrender.com/todos/${id}`, {
         method: "PUT",
         headers: { "Content-Type" : "application/json"} ,
         body: JSON.stringify({ is_completed : !is_completed})
       })
-      if (response.ok) fetchTodos();
+      if (response.ok) { 
+      fetchTodos();
+      console.log("อัปเดตสถานะไม่สำเร็จ");
+      }
     } catch(error) {
-      console.error("อัปเดตสถานะไม่สำเร็จ:" , error)
+      fetchTodos();
+    } finally {
+      setTimeout(() => {
+        setIsProcessing(false);
+      }, 200);
     }
   };
 
@@ -230,22 +248,22 @@ function App() {
                   <button
                   className='outline'
                   onClick={() => setViewingId(viewingId === todo.id ? null : todo.id)}
-                  style={{ padding: '5px 10px', width: "auto", borderColor: "#00bcd4", color: "#00bced4" , fontSize: "12px"}}
+                  style={{ padding: '5px 10px', width: "auto", borderColor: "#00bcd4", color: "#00bced4" , fontSize: "18px"}}
                   >
                     {viewingId === todo.id ? "Hide" : "Details"}
                   </button>
                   <button 
-                  className="outline"
+                  className="outline-custom"
                   onClick={() => {
                     setEditingId(todo.id);
                     setEditText(todo.title)
                     setEditDiscription(todo.discription || "");
                     setViewingId(null);
                   }}
-                  style={{ padding: "5px 10px", width: "auto", borderColor: "#ffc107" , color: "#ffc107" , fontSize: "12px"}}>
+                  style={{ padding: "5px 10px", width: "auto", borderColor: "#ffc107" ,  fontSize: "18px"}}>
                     Edit
                   </button>
-                  <button class="delete1" onClick={() => deleteTodo(todo.id)} style={{ width: "auto" , padding: "5px 10px" , fontSize: "12px"}}>Delete</button>
+                  <button class="delete1" onClick={() => deleteTodo(todo.id)} style={{ width: "auto" , padding: "5px 10px" , fontSize: "18px"}}>Delete</button>
                 </div>
               </>
             )}
