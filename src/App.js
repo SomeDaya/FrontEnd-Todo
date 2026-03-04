@@ -213,7 +213,7 @@ function App() {
           <button  className="button2 forup" onClick={addTodo}>เพิ่ม</button>
         </fieldset>
         {todos.map((todo) => (
-          <div key={todo.id} className="todo-row" style={{ display: 'flex', flexDirection: 'column', padding: '15px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
+          <div key={todo.id} className="todo-row" style={{ display: 'flex', flexDirection: 'column', padding: '10px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
          
           <div className='todo-main-controls' style={{ display: "flex" , justifyContent: "space-between", alignItems: "center" , flexWrap:"wrap", gap:"10px" , width: "100%"}}>
          
@@ -239,7 +239,7 @@ function App() {
             </div>
             ) : (
               <>
-              <div className='todo-content' style={{ flex: "1 1 200px" , minWidth: "0" , paddingTop: "5px" , paddingBottom: "5px"}}>
+              <div className='todo-content' style={{ flex: "1 1 200px" , minWidth: "0" , paddingTop: "0px" , paddingBottom: "5px"}}>
                 <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? "line-through" : "none", cursor: "pointer",  wordBreak: "break-word" , display: "block" , fontSize: "1.1rem"}}>
                   {todo.title}
                 </span>

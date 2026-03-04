@@ -80,7 +80,7 @@ button.outline-custom:hover {
   border: none;
   outline: none;
   color: #fff;
-  box-shadow: 0 4px 8px rgba(217, 38, 98, 0.3);
+  box-shadow: 0 4px 8px #ca9904;
 }
 
 input[type="text"] {
@@ -176,25 +176,68 @@ button[type="submit"]:hover {
   touch-action: manipulation;
 }
 
+ nav {
+    align-items: center !important;
+  }
+
+button.outline.contrast {
+  margin: 0 !important;
+  height: 38px !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.forbox {
+    border-bottom: 4px solid rgb(244, 44, 111) !important;
+    padding-bottom: 2px !important;
+    padding-right: 0px !important;
+    display: inline-block !important;
+    word-break: break-all !important;
+    font-size: 22px !important;
+  }
+
+fieldset[role="group"] {
+  margin-bottom: 5px !important;
+}
+
 @media (max-width: 600px) {
-  button.outline,
+
+  .forbox {
+    font-size: 14px !important;
+  }
+
+  button.outline , 
+  button.outline-custom,
   .delete1 {
     width: auto !important;
-    flex: 1;
+    flex: 1 1 calc(33% - 10px) !important;
+    min-width: 70px !important;
     padding: 0 5px !important;
-    font-size: 11px !important;
+    font-size: 14px !important;
     height: 36px !important;
   }
 
-  .todo-item-row > div {
+
+
+  .todo-main-controls {
     flex-direction: column !important;
     align-items: flex-start !important;
+    justify-content: flex-start !important;
+    height: auto !important;
     gap: 10px !important;
   }
 
-  .todo-item-row div[style*="display: flex;"] {
+  .todo-content{
+    flex: none !important;
+    width: 100% !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .todo-actions {
     width: 100% !important;
     justify-content: space-between !important;
+    flex-wrap: wrap !important;
     gap: 5px !important;
   }
 
