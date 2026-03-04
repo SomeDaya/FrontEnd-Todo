@@ -195,9 +195,9 @@ function App() {
           <button  className="button2 forup" onClick={addTodo}>เพิ่ม</button>
         </fieldset>
         {todos.map((todo) => (
-          <div key={todo.id} className="todo-item-row" style={{ display: 'flex', flexDirection: 'column', padding: '15px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
+          <div key={todo.id} className="todo-row" style={{ display: 'flex', flexDirection: 'column', padding: '15px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
          
-          <div style={{ display: "flex" , justifyContent: "space-between", alignItems: "center" , flexWrap:"wrap", gap:"10px"}}>
+          <div className='todo-main-controls' style={{ display: "flex" , justifyContent: "space-between", alignItems: "center" , flexWrap:"wrap", gap:"10px" , width: "100%"}}>
          
             {editingId === todo.id ? (
             <div style={{ display: "flex" , flexDirection: "column", flex: 1, gap: "10px"}}>
@@ -221,12 +221,12 @@ function App() {
             </div>
             ) : (
               <>
-              <div className='todo-content' style={{ flex: "1 1 150px" , minWidth: "0"}}>
-                <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? "line-through" : "none", cursor: "pointer", flex: "1 1 200px", wordBreak: "break-word" , display: "block"}}>
+              <div className='todo-content' style={{ flex: "1 1 200px" , minWidth: "0" , paddingTop: "5px" , paddingBottom: "5px"}}>
+                <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? "line-through" : "none", cursor: "pointer",  wordBreak: "break-word" , display: "block" , fontSize: "1.1rem"}}>
                   {todo.title}
                 </span>
               </div>
-                <div className = "todo-actions" style ={{ display: "flex", gap: "5px" , flexWrap: "nowrap" , alignItems:"center" , marginLeft:"auto"}}>
+                <div className = "todo-actions botton-group-for-mobile" style ={{ display: "flex", gap: "5px" , flexWrap: "nowrap" , alignItems:"center" , flex: "0 0 auto"}}>
                   <button
                   className='outline'
                   onClick={() => setViewingId(viewingId === todo.id ? null : todo.id)}

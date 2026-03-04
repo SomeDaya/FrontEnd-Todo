@@ -42,9 +42,14 @@ button.outline {
   border: 1px solid rgb(244, 44, 111);
   color: rgb(217, 38, 98);
   border-radius: 11px;
-  width: 165px !important;
-  padding-bottom: 1vh;
-  padding-top: 1vh;
+  height: 38px !important;
+  width: 120px !important;
+  padding: 0 10px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 button.outline:hover {
@@ -109,9 +114,16 @@ button[type="submit"]:hover {
 .delete1 {
   background-color: rgb(199, 34, 89);
   border: none;
+  border-radius: 11px;
   outline: none;
-  height: 4vh;
-  width: 85px !important;
+  color: white;
+  height: 38px !important;
+  width: 90px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .delete1:hover{
@@ -137,10 +149,9 @@ button[type="submit"]:hover {
   .delete1 {
     width: auto !important;
     flex: 1;
-    min-width: 80px;
-    padding: 8px 5px !important;
+    padding: 0 5px !important;
     font-size: 11px !important;
-    height: auto !important;
+    height: 36px !important;
   }
 
   .todo-item-row > div {
