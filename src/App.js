@@ -195,7 +195,7 @@ function App() {
           <button  className="button2 forup" onClick={addTodo}>เพิ่ม</button>
         </fieldset>
         {todos.map((todo) => (
-          <div key={todo.id} className="todo-row" style={{ display: 'flex', flexDirection: 'column', padding: '15px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
+          <div key={todo.id} className="todo-item-row" style={{ display: 'flex', flexDirection: 'column', padding: '15px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
          
           <div style={{ display: "flex" , justifyContent: "space-between", alignItems: "center" , flexWrap:"wrap", gap:"10px"}}>
          
@@ -221,10 +221,12 @@ function App() {
             </div>
             ) : (
               <>
-                <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? "line-through" : "none", cursor: "pointer", flex: "1 1 200px", wordBreak: "break-word"}}>
+              <div className='todo-content' style={{ flex: "1 1 150px" , minWidth: "0"}}>
+                <span onClick={() => toggleTodo(todo.id, todo.is_completed)} style={{ textDecoration: todo.is_completed ? "line-through" : "none", cursor: "pointer", flex: "1 1 200px", wordBreak: "break-word" , display: "block"}}>
                   {todo.title}
                 </span>
-                <div style ={{ display: "flex", gap: "5px" , flexWrap: "nowrap" , alignItems:"center"}}>
+              </div>
+                <div className = "todo-actions" style ={{ display: "flex", gap: "5px" , flexWrap: "nowrap" , alignItems:"center" , marginLeft:"auto"}}>
                   <button
                   className='outline'
                   onClick={() => setViewingId(viewingId === todo.id ? null : todo.id)}
