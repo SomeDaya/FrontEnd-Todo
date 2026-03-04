@@ -203,7 +203,8 @@ fieldset[role="group"] {
 @media (max-width: 600px) {
 
   .forbox {
-    font-size: 14px !important;
+    font-size: 12px !important;
+    border-bottom: 3px solid rgb(244, 44, 111) !important;
   }
 
   button.outline , 
