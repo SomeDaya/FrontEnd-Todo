@@ -97,7 +97,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      const response = await fetch (`https://testsopabase.onrender.com/todos`, {
+      const response = await fetch (`https://testsopabase.onrender.com/todos/${id}`, {
         method: "DELETE",
       });
       if (response.ok) fetchTodos();
@@ -108,7 +108,7 @@ function App() {
 
   const toggleTodo = async (id, is_completed) => {
     try {
-      const response = await fetch (`https://testsopabase.onrender.com/todos`, {
+      const response = await fetch (`https://testsopabase.onrender.com/todos/${id}`, {
         method: "PUT",
         headers: { "Content-Type" : "application/json"} ,
         body: JSON.stringify({ is_completed : !is_completed})
@@ -121,7 +121,7 @@ function App() {
 
   const saveEdit = async (id) => {
     try {
-      const response = await fetch(`https://testsopabase.onrender.com/todos` , {
+      const response = await fetch(`https://testsopabase.onrender.com/todos/${id}` , {
         method: "PUT" ,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: editText , discription: editDiscription})
@@ -197,7 +197,7 @@ function App() {
         {todos.map((todo) => (
           <div key={todo.id} style={{ display: 'flex', flexDirection: 'column', padding: '10px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
          
-          <div style={{ display: "flex" , justifyContent: "space-between", alignItems: "center"}}>
+          <div style={{ display: "flex" , justifyContent: "space-between", alignItems: "center" , flexWrap:"wrap", gap:"10px"}}>
          
             {editingId === todo.id ? (
             <div style={{ display: "flex" , flexDirection: "column", flex: 1, gap: "10px"}}>
