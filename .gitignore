@@ -24,6 +24,7 @@ yarn-error.log*
 
 .env
 
-.package-look.json
+.package-lock.json
 .package.json
 bun.look
+jsconfig.json
