@@ -191,8 +191,8 @@ function App() {
       </nav>
       <article class="headerup">
         <fieldset role="group">
-          <input type="text" class="forup" placeholder="มีอะไรต้องทำไหมบอย?" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
-          <button  class="button2 forup" onClick={addTodo}>เพิ่ม</button>
+          <input type="text" className="forup" placeholder="มีอะไรต้องทำไหมบอย?" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
+          <button  className="button2 forup" onClick={addTodo}>เพิ่ม</button>
         </fieldset>
         {todos.map((todo) => (
           <div key={todo.id} className="todo-row" style={{ display: 'flex', flexDirection: 'column', padding: '15px 0px' , borderBottom: '1px solid rgba(255,255,255,0.4)' }}>
