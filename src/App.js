@@ -234,7 +234,7 @@ function App() {
               placeholder="เพิ่มรายละเอียดงาน"
               />
               <div style={{ display: "flex" , flex: 1, gap: "10px"}}>
-              <button onClick={() => saveEdit(todo.id)} style={{ padding: "2px 10px" , width: "auto", backgroundColo: "#4CAF50", border: "none"}}>Save</button>
+              <button onClick={() => saveEdit(todo.id)} style={{ padding: "2px 10px" , width: "auto", backgroundColor: "#4CAF50", border: "none"}}>Save</button>
               <button className="outline" onClick={() => {setEditingId(null); setViewingId(null);}} style={{ padding: "2px 10px" , width: "auto"}}>Cancel</button>
               </div>
             </div>
