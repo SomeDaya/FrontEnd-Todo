@@ -87,6 +87,24 @@ input[type="text"] {
   border-radius: 10px;
 }
 
+.inputpassword {
+  background-color: #fff !important;
+}
+
+input[type="password"].register-input {
+  background-color: #fff !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 10px !important;
+  padding: 20px !important;
+  color: #000 !important;
+  box-shadow: none !important;
+}
+
+input[type="password"].register-input:focus {
+  outline: none !important;
+  border-color: #86b7fe !important;
+}
+
 input[type="email"],
 input[type="password"] {
   background-color: transparent  !important;

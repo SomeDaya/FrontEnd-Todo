@@ -166,13 +166,14 @@ function App() {
         <article style={{background: "rgba(255, 255, 255, 0.15)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" , borderRadius: "15px" , border: "1px solid rgba(255, 255, 255, 0.3)" , boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)"}}>
           {isRegistering ? (
             <>
-          <header style={{backgroundColor: "transparent", boxShadow: "none", border: "none"}}><h2 style={{ textAlign: 'center' ,marginTop: "2vh" , marginBottom: "-2vh" ,color : "rgb(244, 44, 111)"}}>Login</h2></header> 
+          <header style={{backgroundColor: "transparent", boxShadow: "none", border: "none"}}><h2 style={{ textAlign: 'center' ,marginTop: "2vh" , marginBottom: "0vh" ,color : "rgb(244, 44, 111)"}}>Register</h2></header> 
           <form onSubmit={handleSignUp}>
             <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
             <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="text" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <input type="text" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <input type="password" className='register-input' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input type="password" className="register-input" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
             <button type='submit'>register</button>
+            <p style= {{ textAlign: "center" , marginTop: "15px" , cursor:"pointer" , color: "#666"}} > Do you already have an account? <span style={{ color: "rgb(244,44,111)" , textDecoration: "underline"}} onClick={() => setIsRegistering(false)}>return to login</span></p>
           </form>
           </>
           ) : (
